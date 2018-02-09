@@ -1,0 +1,11 @@
+commit 56031d87bdc17a89e128abe9803c48eed48eef7c (HEAD -> master)
+Author: Kristina <kristinashevchenko03@gmail.com>
+Date:   Fri Feb 9 20:12:24 2018 +0300
+
+    add task1
+
+commit c09cf03e9481f440f38f7172bd16c23b60af159e
+Author: Kristina <kristinashevchenko03@gmail.com>
+Date:   Fri Feb 9 20:05:49 2018 +0300
+
+    add .gitignore
