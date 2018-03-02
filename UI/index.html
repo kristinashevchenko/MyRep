@@ -1,209 +1,230 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html >
+<html lang="en">
+
 <head>
+    <meta charset="utf-8">
     <title>Portal</title>
     <link rel="stylesheet" type="text/css" href="header.css">
     <link rel="stylesheet" href="style.css" type="text/css">
 </head>
+
 <body>
-<header><h1>Racoon</h1>
-    <p class="logo"><img src="racoon.png" class="icon-style2"></p>
-</header>
-<div class="log"><img src="imagesnew.png" class="icon-style" alt="Exit" title="Click to exit"></div>
-<p class="user">KristinaShevchenko</p>
-<div class="head"><img src="images21.png" class="icon-style" alt="New photo" title="Add photo"></div>
+    <script src="photoPost.js"></script>
+    <script>
+        Racoon.test();
+    </script>
+    <header>
+        <h1>Racoon</h1>
+        <p class="logo"><img src="racoon.png" class="icon-style2"></p>
+    </header>
+
+    <p class="user">KristinaShevchenko</p>
+    <div class="log"><img src="imagesnew.png" class="icon-style" alt="Exit" title="Click to exit"></div>
+    <div class="head"><img src="images21.png" class="icon-style" alt="New photo" title="Add photo"></div>
 
 
-<div class="all">
-    <div class="up">
-        <img src="backgr.jpg" class="avatar">
-        <div class="name">
-            <p>Masha23</p>
-            <p>09:45 25.02.2018</p></div>
-        <img src="settings.png" class="settings">
-        <img src="delete.png" class="settings">
-    </div>
-    <div class="photoplace"><img src="p1.jpg" class="photo"></div>
-    <div class="down">
-        <div class="descr">
-            <p>Such a beautiful sky!</p>
-            <p>I love this world.</p>
-            <b>#sky#nature#world</b></div>
-        <img src="heart.png" class="settings" alt="Like" title="Like!">
-    </div>
-</div>
-<div class="filter">
-    <form method="POST">
-        <p>Filter</p>
-        <p class="lef"><label> <input type="checkbox">Author:</label></p>
-        <p><input type="text" name="lastname" placeholder="Author name"></p>
-        <p class="lef"><label> <input type="checkbox">Date:</label></p>
-        <p><input type="text" name="date1" placeholder="Date" size="7%">-<input type="text" name="date2"
-                                                                                placeholder="Date" size="7%"></p>
-        <p class="lef"><label> <input type="checkbox">Hashtags:</label></p>
-        <p><input type="text" name="hashtag" placeholder="Hashtags"></p>
-        <button>OK</button>
-    </form>
-</div>
-<div class="all">
-    <div class="up">
-        <img src="backgr.jpg" class="avatar">
-        <div class="name">
-            <p>Ivan26</p>
-            <p>12:34 21.02.2018</p></div>
-        <img src="settings.png" class="settings">
-        <img src="delete.png" class="settings">
-    </div>
-    <div class="photoplace"><img src="p2.jpeg" class="photo"></div>
-    <div class="down">
-        <div class="descr">
-            <p>Flying to Spain</p>
-            <b>#sky#travel#relax</b></div>
-        <img src="heart.png" class="settings" alt="Like" title="Like!">
-    </div>
-</div>
-<div class="all">
-    <div class="up">
-        <img src="backgr.jpg" class="avatar">
-        <div class="name">
-            <p>Juliet</p>
-            <p>08:23 21.02.2018</p></div>
-        <img src="settings.png" class="settings">
-        <img src="delete.png" class="settings">
-    </div>
-    <div class="photoplace"><img src="p3.jpg" class="photo"></div>
-    <div class="down">
-        <div class="descr">
-            <p>Just me and that tree...</p>
-            <b>#nature</b></div>
-        <img src="heart.png" class="settings" alt="Like" title="Like!">
-    </div>
-</div>
-<div class="all">
-    <div class="up">
-        <img src="backgr.jpg" class="avatar">
-        <div class="name">
-            <p>Kosten</p>
-            <p>23:46 19.02.2018</p></div>
-        <img src="settings.png" class="settings">
-        <img src="delete.png" class="settings">
-    </div>
-    <div class="photoplace"><img src="p4.jpg" class="photo"></div>
-    <div class="down">
-        <div class="descr">
-            <p>A perfect place to relax from others.</p>
+    <div class="all">
+        <div class="up">
+            <img src="backgr.jpg" class="avatar">
+            <div class="name">
+                <p>Masha23</p>
+                <p>09:45 25.02.2018</p>
+            </div>
+            <img src="settings.png" class="settings">
+            <img src="delete.png" class="settings">
         </div>
-        <img src="heart.png" class="settings" alt="Like" title="Like!">
-    </div>
-</div>
-<div class="all">
-    <div class="up">
-        <img src="backgr.jpg" class="avatar">
-        <div class="name">
-            <p>Sanya01</p>
-            <p>20:12 19.02.2018</p></div>
-        <img src="settings.png" class="settings">
-        <img src="delete.png" class="settings">
-    </div>
-    <div class="photoplace"><img src="p5.jpg" class="photo"></div>
-    <div class="down">
-        <div class="descr">
-            <p>Spring is coming</p>
-            <b>#spring#flower#happy</b></div>
-        <img src="heart.png" class="settings" alt="Like" title="Like!">
-    </div>
-</div>
-<div class="all">
-    <div class="up">
-        <img src="backgr.jpg" class="avatar">
-        <div class="name">
-            <p>Igorek</p>
-            <p>16:34 19.02.2018</p></div>
-        <img src="settings.png" class="settings">
-        <img src="delete.png" class="settings">
-    </div>
-    <div class="photoplace"><img src="p6.jpg" class="photo"></div>
-    <div class="down">
-        <div class="descr">
-            <p>So cute!)</p>
+        <div class="photoplace"><img src="p1.jpg" class="photo"></div>
+        <div class="down">
+            <div class="descr">
+                <p>Such a beautiful sky!</p>
+                <p>I love this world.</p>
+                <b>#sky#nature#world</b></div>
+            <img src="heart.png" class="settings" alt="Like" title="Like!">
         </div>
-        <img src="heart.png" class="settings" alt="Like" title="Like!">
     </div>
-</div>
-<div class="all">
-    <div class="up">
-        <img src="backgr.jpg" class="avatar">
-        <div class="name">
-            <p>Nastya</p>
-            <p>05:56 19.02.2018</p></div>
-        <img src="settings.png" class="settings">
-        <img src="delete.png" class="settings">
+    <div class="filter">
+        <form method="POST">
+            <p>Filter</p>
+            <p class="lef"><label> <input type="checkbox">Author:</label></p>
+            <p><input type="text" name="lastname" placeholder="Author name"></p>
+            <p class="lef"><label> <input type="checkbox">Date:</label></p>
+            <p><input type="text" name="date1" placeholder="Date" size="7%">-<input type="text" name="date2" placeholder="Date" size="7%"></p>
+            <p class="lef"><label> <input type="checkbox">Hashtags:</label></p>
+            <p><input type="text" name="hashtag" placeholder="Hashtags"></p>
+            <button>OK</button>
+        </form>
     </div>
-    <div class="photoplace"><img src="p7.jpg" class="photo"></div>
-    <div class="down">
-        <div class="descr">
-            <p>Do what you want.</p>
+    <div class="all">
+        <div class="up">
+            <img src="backgr.jpg" class="avatar">
+            <div class="name">
+                <p>Ivan26</p>
+                <p>12:34 21.02.2018</p>
+            </div>
+            <img src="settings.png" class="settings">
+            <img src="delete.png" class="settings">
         </div>
-        <img src="heart.png" class="settings" alt="Like" title="Like!">
+        <div class="photoplace"><img src="p2.jpeg" class="photo"></div>
+        <div class="down">
+            <div class="descr">
+                <p>Flying to Spain</p>
+                <b>#sky#travel#relax</b></div>
+            <img src="heart.png" class="settings" alt="Like" title="Like!">
+        </div>
     </div>
-</div>
-<div class="all">
-    <div class="up">
-        <img src="backgr.jpg" class="avatar">
-        <div class="name">
-            <p>Anechka</p>
-            <p>18:28 18.02.2018</p></div>
-        <img src="settings.png" class="settings">
-        <img src="delete.png" class="settings">
+    <div class="all">
+        <div class="up">
+            <img src="backgr.jpg" class="avatar">
+            <div class="name">
+                <p>Juliet</p>
+                <p>08:23 21.02.2018</p>
+            </div>
+            <img src="settings.png" class="settings">
+            <img src="delete.png" class="settings">
+        </div>
+        <div class="photoplace"><img src="p3.jpg" class="photo"></div>
+        <div class="down">
+            <div class="descr">
+                <p>Just me and that tree...</p>
+                <b>#nature</b></div>
+            <img src="heart.png" class="settings" alt="Like" title="Like!">
+        </div>
     </div>
-    <div class="photoplace"><img src="p8.jpg" class="photo"></div>
-    <div class="down">
-        <div class="descr">
-            <p>My own UFO!)</p>
-            <b>#ufo#funny#child#dream</b></div>
-        <img src="heart.png" class="settings" alt="Like" title="Like!">
+    <div class="all">
+        <div class="up">
+            <img src="backgr.jpg" class="avatar">
+            <div class="name">
+                <p>Kosten</p>
+                <p>23:46 19.02.2018</p>
+            </div>
+            <img src="settings.png" class="settings">
+            <img src="delete.png" class="settings">
+        </div>
+        <div class="photoplace"><img src="p4.jpg" class="photo"></div>
+        <div class="down">
+            <div class="descr">
+                <p>A perfect place to relax from others.</p>
+            </div>
+            <img src="heart.png" class="settings" alt="Like" title="Like!">
+        </div>
     </div>
-</div>
-<div class="all">
-    <div class="up">
-        <img src="backgr.jpg" class="avatar">
-        <div class="name">
-            <p>Ivan26</p>
-            <p>21:14 17.02.2018</p></div>
-        <img src="settings.png" class="settings">
-        <img src="delete.png" class="settings">
+    <div class="all">
+        <div class="up">
+            <img src="backgr.jpg" class="avatar">
+            <div class="name">
+                <p>Sanya01</p>
+                <p>20:12 19.02.2018</p>
+            </div>
+            <img src="settings.png" class="settings">
+            <img src="delete.png" class="settings">
+        </div>
+        <div class="photoplace"><img src="p5.jpg" class="photo"></div>
+        <div class="down">
+            <div class="descr">
+                <p>Spring is coming</p>
+                <b>#spring#flower#happy</b></div>
+            <img src="heart.png" class="settings" alt="Like" title="Like!">
+        </div>
     </div>
-    <div class="photoplace"><img src="p9.jpg" class="photo"></div>
-    <div class="down">
-        <div class="descr">
-            <p>Very exciting!</p>
-            <b>#nature#water#shocked</b></div>
-        <img src="heart.png" class="settings" alt="Like" title="Like!">
+    <div class="all">
+        <div class="up">
+            <img src="backgr.jpg" class="avatar">
+            <div class="name">
+                <p>Igorek</p>
+                <p>16:34 19.02.2018</p>
+            </div>
+            <img src="settings.png" class="settings">
+            <img src="delete.png" class="settings">
+        </div>
+        <div class="photoplace"><img src="p6.jpg" class="photo"></div>
+        <div class="down">
+            <div class="descr">
+                <p>So cute!)</p>
+            </div>
+            <img src="heart.png" class="settings" alt="Like" title="Like!">
+        </div>
     </div>
-</div>
-<div class="all">
-    <div class="up">
-        <img src="backgr.jpg" class="avatar">
-        <div class="name">
-            <p>Katya</p>
-            <p>11:17 15.02.2018</p></div>
-        <img src="settings.png" class="settings">
-        <img src="delete.png" class="settings">
+    <div class="all">
+        <div class="up">
+            <img src="backgr.jpg" class="avatar">
+            <div class="name">
+                <p>Nastya</p>
+                <p>05:56 19.02.2018</p>
+            </div>
+            <img src="settings.png" class="settings">
+            <img src="delete.png" class="settings">
+        </div>
+        <div class="photoplace"><img src="p7.jpg" class="photo"></div>
+        <div class="down">
+            <div class="descr">
+                <p>Do what you want.</p>
+            </div>
+            <img src="heart.png" class="settings" alt="Like" title="Like!">
+        </div>
     </div>
-    <div class="photoplace"><img src="p10.jpg" class="photo"></div>
-    <div class="down">
-        <div class="descr">
-            <p>Have a rest with my family.</p>
-            <b>#family#love#relax#nature</b></div>
-        <img src="heart.png" class="settings" alt="Like" title="Like!">
+    <div class="all">
+        <div class="up">
+            <img src="backgr.jpg" class="avatar">
+            <div class="name">
+                <p>Anechka</p>
+                <p>18:28 18.02.2018</p>
+            </div>
+            <img src="settings.png" class="settings">
+            <img src="delete.png" class="settings">
+        </div>
+        <div class="photoplace"><img src="p8.jpg" class="photo"></div>
+        <div class="down">
+            <div class="descr">
+                <p>My own UFO!)</p>
+                <b>#ufo#funny#child#dream</b></div>
+            <img src="heart.png" class="settings" alt="Like" title="Like!">
+        </div>
     </div>
-</div>
-<div class="more"><a href="#">MORE...</a></div>
-<footer>
-    <div class="ft"><p>Racoon</p>
-        <p>Kristina Shevchenko Prod. 2 k. 2 g.</p>
-        <p>kristinashevchenko03@gmail.com</p>
-        <p>25.02.2018</p></div>
-</footer>
+    <div class="all">
+        <div class="up">
+            <img src="backgr.jpg" class="avatar">
+            <div class="name">
+                <p>Ivan26</p>
+                <p>21:14 17.02.2018</p>
+            </div>
+            <img src="settings.png" class="settings">
+            <img src="delete.png" class="settings">
+        </div>
+        <div class="photoplace"><img src="p9.jpg" class="photo"></div>
+        <div class="down">
+            <div class="descr">
+                <p>Very exciting!</p>
+                <b>#nature#water#shocked</b></div>
+            <img src="heart.png" class="settings" alt="Like" title="Like!">
+        </div>
+    </div>
+    <div class="all">
+        <div class="up">
+            <img src="backgr.jpg" class="avatar">
+            <div class="name">
+                <p>Katya</p>
+                <p>11:17 15.02.2018</p>
+            </div>
+            <img src="settings.png" class="settings">
+            <img src="delete.png" class="settings">
+        </div>
+        <div class="photoplace"><img src="p10.jpg" class="photo"></div>
+        <div class="down">
+            <div class="descr">
+                <p>Have a rest with my family.</p>
+                <b>#family#love#relax#nature</b></div>
+            <img src="heart.png" class="settings" alt="Like" title="Like!">
+        </div>
+    </div>
+    <div class="more"><a href="#">MORE...</a></div>
+    <footer>
+        <div class="ft">
+            <p>Racoon</p>
+            <p>Kristina Shevchenko Prod. 2 k. 2 g.</p>
+            <p>kristinashevchenko03@gmail.com</p>
+            <p>25.02.2018</p>
+        </div>
+    </footer>
 </body>
+
 </html>
