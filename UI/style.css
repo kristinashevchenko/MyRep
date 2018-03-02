@@ -9,10 +9,9 @@ h1{
 }
 .log
 {
-    width:90%;
+    display:inline-block;
+    width:80%;
     text-align: right;
-    padding-right: 1.2em;
-    position: fixed;  
 }
 .icon-style{
     width: 2.5em;
@@ -26,16 +25,15 @@ h1{
     text-align:center;
     margin-left: 5%;
 }
-.head{
-    position: fixed; 
+.head{ 
     display:inline-block;
     text-align: left;
     margin-left:1.5em;
     width: 92%;
-    padding-top: 3em;
+    
 }
 .user{
-    position: fixed;
+    display:inline-block;
     text-align: left;
     margin: 1em;
     font-family: cursive;
