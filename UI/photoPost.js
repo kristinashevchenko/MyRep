@@ -250,10 +250,10 @@ const Racoon = (function() {
                             photoPosts[index].photoLink = photoPost.photoLink;
                         else return false;
                     }
-                    if (photoPost.hashtags !== undefined) {
+                    if (photoPost.hashtags !== undefined&&(photoPost.hashtags instanceof Array)) {
                         photoPosts[index].hashtags = photoPost.hashtags;
                     }
-                    if (photoPost.likes !== undefined) {
+                    if (photoPost.likes !== undefined&& (photoPost.likes instanceof Array)) {
                         if ((photoPost.likes.findIndex(function(element) {
                                 return element === photoPosts[index].author;
                             }) === -1)) {
@@ -363,7 +363,7 @@ const Racoon = (function() {
             console.log('Edit photopost with valid arguments');
             console.log(Racoon.editPhotoPost('2', {
                 description: 'New description',
-                hashtags: ['hello', 'world']
+                hashtags: 'hello'
             }));
             console.log(Racoon.photoPosts);
             console.log('Edit photopost with invalid arguments');
