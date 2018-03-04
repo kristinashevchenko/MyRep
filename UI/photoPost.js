@@ -1,4 +1,4 @@
-var Racoon = (function() {
+const Racoon = (function() {
     var photoPosts = [{
             id: '1',
             description: 'Женская сборная Беларуси выиграла эстафету в рамках соревнований по биатлону на Олимпийских играх в Пхёнчхане!!!',
@@ -189,26 +189,23 @@ var Racoon = (function() {
 
         validatePhotoPost: function(photoPost) {
             if (photoPost !== null) {
-                if ((photoPost.id !== (null || '')) && (typeof photoPost.id == 'string')) {
+                if ((photoPost.id !== '') && (typeof photoPost.id === 'string')) {
                     var index = photoPosts.findIndex(function(element) {
-                        return element.id == photoPost.id;
+                        return element.id === photoPost.id;
                     });
                     if (index == -1) {
-                        if ((photoPost.description !== (null || '')) && (typeof photoPost.description == 'string' && String(photoPost.description).length < 200)) {
-                            if ((photoPost.createdAt !== (null || '')) && (photoPost.createdAt instanceof Date)) {
-                                if ((photoPost.author !== (null || '')) && (typeof photoPost.author == 'string')) {
-                                    if ((photoPost.photoLink !== (null || '')) && (typeof photoPost.photoLink == 'string')) {
-                                        if (photoPost.likes === null || photoPost.likes === undefined) {
-                                            if (photoPost.hashtags !== null) {
-                                                if (photoPost.hashtags.length !== 0)
-                                                    return true;
-                                                else return false;
-                                            }
-                                            return true;
-                                        } else return false;
-                                    } else return false;
-                                } else return false;
-                            } else return false;
+                        if ((photoPost.description !== '') && (typeof photoPost.description === 'string' && String(photoPost.description).length < 200) && (photoPost.createdAt instanceof Date) && (photoPost.author !== '') &&
+                            (typeof photoPost.author === 'string') && (photoPost.photoLink !== '') && (typeof photoPost.photoLink === 'string')) {
+                            if (photoPost.likes !== undefined) {
+                                if (!(photoPost.likes instanceof Array))
+                                    return false;
+                            }
+                            if (photoPost.hashtags !== undefined) {
+                                if (photoPost.hashtags instanceof Array)
+                                    return true;
+                                else return false;
+                            }
+                            return true;
                         } else return false;
                     } else return false;
                 } else return false;
@@ -216,8 +213,11 @@ var Racoon = (function() {
         },
 
         addPhotoPost: function(photoPost) {
-            if (Racoon.validatePhotoPost(photoPost) === true) {
-                photoPosts.push(photoPost);
+            if (Racoon.validatePhotoPost(photoPost)) {
+                photoPosts.unshift(photoPost);
+                photoPosts.sort(function compareData(a, b) {
+                    return b.createdAt - a.createdAt;
+                });
                 return true;
             } else return false;
         },
@@ -226,7 +226,7 @@ var Racoon = (function() {
             var index = photoPosts.findIndex(function(element) {
                 return element.id === id;
             });
-            if (index == -1)
+            if (index === -1)
                 return false;
             else {
                 photoPosts.splice(index, 1);
@@ -235,71 +235,66 @@ var Racoon = (function() {
         },
 
         editPhotoPost: function(id, photoPost) {
-            if ((id !== null || id !== undefined) && (photoPost !== null || photoPost !== undefined)) {
-                if (photoPost.author === undefined && photoPost.createdAt === undefined && photoPost.likes === undefined && photoPost.id === undefined) {
-                    var index = photoPosts.findIndex(function(element) {
-                        return element.id === id;
-                    });
-                    if (index !== -1) {
-                        if (photoPost.description !== undefined) {
-                            if ((photoPost.description !== '') && (typeof photoPost.description == 'string' && String(photoPost.description).length < 200))
-                                photoPosts[index].description = photoPost.description;
-                            else return false;
-                        }
-                        if (photoPost.photoLink !== undefined) {
-                            if ((photoPost.photoLink !== '') && (typeof photoPost.photoLink == 'string'))
-                                photoPosts[index].photoLink = photoPost.photoLink;
-                            else return false;
-                        }
-                        if (photoPost.hashtags !== undefined) {
-                            if (photoPost.hashtags.length !== 0) {
-                                photoPosts[index].hashtags = photoPost.hashtags;
-                                return true;
-                            } else return false;
-
-                        }
-                        return true;
-                    } else return false;
+            if (id !== undefined && photoPost !== undefined) {
+                var index = photoPosts.findIndex(function(element) {
+                    return element.id === id;
+                });
+                if (index !== -1) {
+                    if (photoPost.description !== undefined) {
+                        if ((photoPost.description !== '') && (typeof photoPost.description === 'string' && String(photoPost.description).length < 200))
+                            photoPosts[index].description = photoPost.description;
+                        else return false;
+                    }
+                    if (photoPost.photoLink !== undefined) {
+                        if ((photoPost.photoLink !== '') && (typeof photoPost.photoLink === 'string'))
+                            photoPosts[index].photoLink = photoPost.photoLink;
+                        else return false;
+                    }
+                    if (photoPost.hashtags !== undefined) {
+                        photoPosts[index].hashtags = photoPost.hashtags;
+                    }
+                    if (photoPost.likes !== undefined) {
+                        if ((photoPost.likes.findIndex(function(element) {
+                                return element === photoPosts[index].author;
+                            }) === -1)) {
+                            photoPosts[index].likes = photoPost.likes;
+                            return true;
+                        } else return false;
+                    }
+                    return true;
                 } else return false;
             } else return false;
         },
 
         getPhotoPosts: function(skip, top, filter) {
-            photoPosts.sort(function compareData(a, b) {
-                return b.createdAt - a.createdAt;
-            });
             if (skip === undefined) skip = 0;
             if (top === undefined) top = 10;
-            if (filter == null) {
+            if (filter === undefined) {
                 return photoPosts.slice(skip, top);
             } else {
                 var newAr = photoPosts;
-                if (filter.author !== undefined && filter.author !== '' && (typeof filter.author == 'string'))
+                if (filter.author !== undefined && filter.author !== '' && (typeof filter.author === 'string'))
                     newAr = newAr.filter(function(obj) {
                         return obj.author === filter.author;
                     });
-                if (filter.hashtags !== undefined)
+                if (filter.hashtags !== undefined && filter.hashtags instanceof Array)
                     newAr = newAr.filter(function(obj) {
-                        var k = 0;
                         if (obj.hashtags !== undefined) {
-                            for (var i = 0; i < obj.hashtags.length; i++)
-                                for (var j = 0; j < filter.hashtags.length; j++)
-                                    if (obj.hashtags[i] === filter.hashtags[j])
-                                        k++;
-                            if (k == filter.hashtags.length)
-                                return true;
+                            for (var j = 0; j < filter.hashtags.length; j++) {
+                                var ind = obj.hashtags.findIndex(function(element) {
+                                    return element === filter.hashtags[j];
+                                });
+                                if (ind === -1) return false;
+                            }
+                            return true;
                         } else return false;
-
                     });
                 if ((filter.date1 !== undefined) && (filter.date2 !== undefined) && (filter.date1 !== '') && (filter.date2 !== '') && (filter.date1 instanceof Date) && (filter.date2 instanceof Date))
                     newAr = newAr.filter(function(obj) {
                         return (((obj.createdAt - filter.date1) >= 0) && ((obj.createdAt - filter.date2) <= 0));
                     });
-
                 return newAr.slice(skip, top);
-
             }
-
         },
 
         test: function() {
@@ -354,15 +349,7 @@ var Racoon = (function() {
                 createdAt: new Date('2018-03-02T09:45:00'),
                 photoLink: 'p1.jpg',
                 hashtags: ['hello'],
-                likes: ['Juliet']
-            }));
-            console.log(Racoon.addPhotoPost({
-                id: '24',
-                author: 'Kristina',
-                description: 'Hello,it is me',
-                createdAt: new Date('2018-03-02T09:45:00'),
-                photoLink: 'p1.jpg',
-                hashtags: []
+                likes: 'Juliet'
             }));
             console.log(Racoon.photoPosts);
             console.log('Remove post by valid id');
@@ -381,11 +368,7 @@ var Racoon = (function() {
             console.log(Racoon.photoPosts);
             console.log('Edit photopost with invalid arguments');
             console.log(Racoon.editPhotoPost('3', {
-                author: 'Tanya',
-                description: 'I am a new owner of this post',
-                hashtags: ['hello', 'world']
-            }));
-            console.log(Racoon.editPhotoPost('25', {
+                likes: ['Kirill12'],
                 description: 'I am a new owner of this post',
                 hashtags: ['hello', 'world']
             }));
