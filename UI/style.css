@@ -51,6 +51,16 @@ h1{
     border: 2px;
     margin-left:0.8em;
     margin-top:1.2em;
+    background-color: #F2E0F7;
+}
+.textav{
+    position: absolute;
+    margin-left:0.8em;
+    font-size:1em;
+    font-weight: bold;
+}
+.textav:first-letter{
+    margin-left:0.4em;
 }
 .name{
     width:66%;
