@@ -137,7 +137,7 @@ const Racoon = (function() {
             description: 'Spring is coming',
             createdAt: new Date('2018-02-19T20:12:00'),
             author: 'Sanya01',
-            photoLink: 'p5.jpg',
+            photoLink: "p5.jpg",
             hashtags: ['spring', 'flower', 'happy'],
             likes: ['Ivan', 'Masha03']
         },
@@ -165,14 +165,14 @@ const Racoon = (function() {
             author: 'Ivan26',
             photoLink: 'p2.jpeg',
             hashtags: ['sky', 'travel', 'relax'],
-            likes: ['Ivan', 'Masha03']
+            likes: ['Ivan', 'Masha03','me']
         },
         {
             id: '20',
             description: 'Such a beautiful sky!I love this world.',
             createdAt: new Date('2018-02-25T09:45:00'),
             author: 'Masha23',
-            photoLink: 'p1.jpg',
+            photoLink: "p1.jpg",
             hashtags: ['sky', 'nature', 'world'],
             likes: ['Ivan', 'Masha03']
         }
