@@ -1,3 +1,4 @@
+"use strict";
 const DOMs = (function() {
     let user = "Kristina Shevchenko";
     let photos = document.createElement('div');
