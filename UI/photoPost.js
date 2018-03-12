@@ -1,3 +1,4 @@
+"use strict";
 const Racoon = (function() {
     var photoPosts = [{
             id: '1',
