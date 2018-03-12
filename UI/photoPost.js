@@ -165,7 +165,7 @@ const Racoon = (function() {
             author: 'Ivan26',
             photoLink: 'p2.jpeg',
             hashtags: ['sky', 'travel', 'relax'],
-            likes: ['Ivan', 'Masha03','me']
+            likes: ['Ivan', 'Masha03', 'me']
         },
         {
             id: '20',
@@ -186,7 +186,19 @@ const Racoon = (function() {
                 return photoPosts[index];
             } else return undefined;
         },
-
+        getPhotoPostIndex: function(id) {
+            if (id !== null || id !== undefined) {
+                var index = photoPosts.findIndex(function(element) {
+                    return element.id === id;
+                });
+                return index;
+            } else return undefined;
+        },
+        getPhotoPostByIndex: function(index) {
+            if (index !== undefined && index >= 0 && index < photoPosts.length) {
+                return photoPosts[index];
+            } else return undefined;
+        },
         validatePhotoPost: function(photoPost) {
             if (photoPost !== null) {
                 if ((photoPost.id !== '') && (typeof photoPost.id === 'string')) {
@@ -222,14 +234,15 @@ const Racoon = (function() {
             } else return false;
         },
 
-        removePhotoPost: function(id) {
+        removePhotoPost: function(id, del) {
             var index = photoPosts.findIndex(function(element) {
                 return element.id === id;
             });
             if (index === -1)
                 return false;
             else {
-                photoPosts.splice(index, 1);
+                if (del === true || del === undefined)
+                    photoPosts.splice(index, 1);
                 return true;
             }
         },
@@ -250,10 +263,10 @@ const Racoon = (function() {
                             photoPosts[index].photoLink = photoPost.photoLink;
                         else return false;
                     }
-                    if (photoPost.hashtags !== undefined&&(photoPost.hashtags instanceof Array)) {
+                    if (photoPost.hashtags !== undefined && (photoPost.hashtags instanceof Array)) {
                         photoPosts[index].hashtags = photoPost.hashtags;
                     }
-                    if (photoPost.likes !== undefined&& (photoPost.likes instanceof Array)) {
+                    if (photoPost.likes !== undefined && (photoPost.likes instanceof Array)) {
                         if ((photoPost.likes.findIndex(function(element) {
                                 return element === photoPosts[index].author;
                             }) === -1)) {
