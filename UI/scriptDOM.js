@@ -2,6 +2,8 @@ const DOMs = (function() {
     let user = "Kristina Shevchenko";
     let photos = document.createElement('div');
     photos.id = "photos";
+    let start = 0,
+        end = 10;
     return {
         initElem: function(user) {
             if (user !== null) {
@@ -121,8 +123,16 @@ const DOMs = (function() {
             return all;
         },
         removePhoto: function(id) {
-            if ((id !== '') && (typeof id === 'string') && Racoon.removePhotoPost(id)) {
+
+            if ((id !== '') && (typeof id === 'string') && Racoon.removePhotoPost(id, false) === true) {
+
                 photos.removeChild(document.getElementById(id));
+                let ind = Racoon.getPhotoPostIndex(photos.lastElementChild.id);
+                if (ind !== 0) {
+                    ind++;
+                    start++;
+                    photos.appendChild(DOMs.initDivPhoto(Racoon.getPhotoPostByIndex(ind)));
+                }
             }
         },
         editPhoto: function(id, photoPost) {
@@ -131,7 +141,7 @@ const DOMs = (function() {
         },
         testing: function() {
             DOMs.initElem(user);
-            DOMs.showPhotoPosts(Racoon.getPhotoPosts(0, 10), 0, 10);
+            DOMs.showPhotoPosts(Racoon.getPhotoPosts(start, end), start, end);
             console.log("Add new photo post");
             console.log(DOMs.addPhoto({
                 id: "22",
@@ -147,7 +157,6 @@ const DOMs = (function() {
             console.log(DOMs.editPhoto("16", {
                 description: "Changed description."
             }));
-
         }
     };
 
