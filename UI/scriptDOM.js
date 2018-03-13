@@ -1,6 +1,6 @@
 "use strict";
 const DOMs = (function() {
-    let user = "Kristina Shevchenko";
+    let user = "Kristina";
     let photos = document.createElement('div');
     photos.id = "photos";
     let start = 0,
@@ -81,7 +81,7 @@ const DOMs = (function() {
             name.appendChild(usname);
             up.appendChild(avatar);
             up.appendChild(name);
-            if (user !== null) {
+            if (user ===photoPost.author) {
                 let settings = document.createElement('img');
                 settings.className = "settings";
                 settings.src = "settings.png";
@@ -125,8 +125,7 @@ const DOMs = (function() {
         },
         removePhoto: function(id) {
 
-            if ((id !== '') && (typeof id === 'string') && Racoon.removePhotoPost(id, false) === true) {
-
+            if ((id !== '') && (typeof id === 'string') && Racoon.removePhotoPost(id) === true) {
                 photos.removeChild(document.getElementById(id));
                 let ind = Racoon.getPhotoPostIndex(photos.lastElementChild.id);
                 if (ind !== 0) {
