@@ -235,15 +235,14 @@ const Racoon = (function() {
             } else return false;
         },
 
-        removePhotoPost: function(id, del) {
+        removePhotoPost: function(id) {
             var index = photoPosts.findIndex(function(element) {
                 return element.id === id;
             });
             if (index === -1)
                 return false;
             else {
-                if (del === true || del === undefined)
-                    photoPosts.splice(index, 1);
+                photoPosts.splice(index, 1);
                 return true;
             }
         },
