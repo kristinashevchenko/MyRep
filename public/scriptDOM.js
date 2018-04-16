@@ -1,8 +1,8 @@
 "use strict";
-const DOMs = (function() {
+const DOMs = (function () {
     let users = [];
     let posts = [];
-    let user = JSON.parse(window.localStorage.getItem("user"));;
+    let user = JSON.parse(window.localStorage.getItem("user"));
     let photos = document.createElement('div');
     photos.id = "photos";
     let photos2 = document.createElement('div');
@@ -25,7 +25,7 @@ const DOMs = (function() {
         second: 'numeric'
     };
     return {
-        initComponents: function() {
+        initComponents: function () {
             us = document.createElement('p');
             us.innerHTML = user;
             us.className = "user";
@@ -47,7 +47,7 @@ const DOMs = (function() {
             headimg.addEventListener('click', DOMs.addPhotoJS);
             login = document.createElement('a');
             login.className = "log2";
-            login.innerHTML = "Log in";
+            login.textContent = "Log in";
             document.body.appendChild(us);
 
             log.appendChild(logimg);
@@ -65,7 +65,7 @@ const DOMs = (function() {
             photos22.style.display = "none";
 
             let authoriz = document.createElement('h2');
-            authoriz.innerHTML = "Authorization";
+            authoriz.textContent = "Authorization";
             authoriz.className = "authoriz";
             let text = document.createElement('p');
             text.innerHTML = "Welcome to RacoonApplication!" + "<br>" + "Please, enter login and password, that you should remember:)";
@@ -74,7 +74,7 @@ const DOMs = (function() {
             rect.className = "authrect";
             let auth = document.createElement('form');
             let logout = document.createElement('p');
-            logout.innerHTML = "Login";
+            logout.textContent = "Login";
             logout.className = "authtext";
             let logining = document.createElement('INPUT');
             logining.setAttribute("type", "text");
@@ -83,7 +83,7 @@ const DOMs = (function() {
             logining.className = "authinputs";
 
             let passwout = document.createElement('p');
-            passwout.innerHTML = "Password";
+            passwout.textContent = "Password";
             passwout.className = "authtext";
             let passwin = document.createElement('input');
             passwin.setAttribute("type", "password");
@@ -91,7 +91,7 @@ const DOMs = (function() {
             passwin.setAttribute("size", "40%");
             passwin.className = "authinputs";
             logok = document.createElement('button');
-            logok.innerHTML = "OK";
+            logok.textContent = "OK";
             logok.className = "logokbutton";
             logok.addEventListener('click', DOMs.login);
             auth.appendChild(logout);
@@ -108,7 +108,7 @@ const DOMs = (function() {
 
             ok = document.createElement('button');
             ok.className = "okbutton";
-            ok.innerHTML = "OK";
+            ok.textContent = "OK";
             b = document.createElement('div');
             b.id = "b";
             a = document.createElement('div');
@@ -120,8 +120,8 @@ const DOMs = (function() {
             sure = document.createElement('p');
             sure.className = "modalwindtext";
             yes.className = "button";
-            yes.innerHTML = "yes";
-            no.innerHTML = "no";
+            yes.textContent = "yes";
+            no.textContent = "no";
             no.className = "button";
             yes.addEventListener('click', DOMs.hideAdel);
             no.addEventListener('click', DOMs.hideA);
@@ -136,11 +136,10 @@ const DOMs = (function() {
             yes.style.display = "block";
             no.style.display = "block";
             a.style.top = "200px";
-
-            DOMs.showPhotoPosts(Racoon.getPhotoPosts(start, end), start, end);
+            Controller.getPosts(start, end);
             DOMs.initElem(user);
         },
-        initElem: function(user) {
+        initElem: function (user) {
             if (user !== null) {
                 login.style.display = "none";
                 us.style.display = "inline-block";
@@ -151,49 +150,46 @@ const DOMs = (function() {
                 log.style.display = "none";
                 head.style.display = "none";
                 login.style.display = "inline-block";
-                login.innerHTML = "Log in";
+                login.textContent = "Log in";
             }
         },
-        logOut: function() {
+        logOut: function () {
             user = null;
             window.localStorage.setItem("user", JSON.stringify(user));
             photos22.style.display = "none";
             DOMs.initElem(user);
             DOMs.checkDeletes();
         },
-        checkLikes: function() {
+        checkLikes: function () {
             let elems = document.getElementsByClassName("all");
             for (var i = 0; i < elems.length; i++) {
-                let kollik = Racoon.numbLikes(elems[i].id);
-                l = elems[i].children[0].children[0].children[0];
-                l.innerHTML = kollik + "<br>" + "likes";
+                Controller.numbLikes(elems[i]);
             }
+
         },
-        loginClick: function() {
-            if (login.innerHTML === "Back") {
+        loginClick: function () {
+            if (login.textContent === "Back") {
                 photos.style.display = "inline-block";
-                login.innerHTML = "Log in"
+                login.textContent = "Log in"
                 login.style.display = "none";
                 rect.style.display = "none";
                 DOMs.initElem(user);
                 document.getElementsByClassName("authinputs")[1].value = "";
                 document.getElementsByClassName("authinputs")[0].value = "";
-                if (end < Racoon.getArSize())
-                    SecondJS.hideFilter(false, false);
-                else SecondJS.hideFilter(true, false);
+                Controller.getSize(end);
                 if (all2.innerHTML !== "") {
                     all2.innerHTML = "";
                     document.body.removeChild(all2);
                 }
-            } else if (login.innerHTML === "Log in") {
+            } else if (login.textContent === "Log in") {
                 photos.style.display = "none";
-                login.innerHTML = "Back";
+                login.textContent = "Back";
                 SecondJS.hideFilter(true, true);
                 rect.style.display = "inline-block";
             }
 
         },
-        login: function() {
+        login: function () {
             var p = document.getElementsByClassName("authinputs")[1].value;
             var l = document.getElementsByClassName("authinputs")[0].value;
             users = JSON.parse(window.localStorage.getItem("users"));
@@ -201,7 +197,7 @@ const DOMs = (function() {
             if (l !== "" && p !== "") {
                 var index;
                 if (users !== null) {
-                    index = users.findIndex(function(element) {
+                    index = users.findIndex(function (element) {
                         return element.login === l;
                     });
                 } else {
@@ -218,46 +214,42 @@ const DOMs = (function() {
                     window.localStorage.setItem("users", JSON.stringify(users));
                     users = [];
                     window.localStorage.setItem("user", JSON.stringify(user));
-                    us.innerHTML = JSON.parse(window.localStorage.getItem("user"));
+                    us.textContent = JSON.parse(window.localStorage.getItem("user"));
                     photos.style.display = "inline-block";
                     rect.style.display = "none";
                     DOMs.initElem(user);
                     document.getElementsByClassName("authinputs")[1].value = "";
                     document.getElementsByClassName("authinputs")[0].value = "";
-                    if (end < Racoon.getArSize())
-                        SecondJS.hideFilter(false, false);
-                    else SecondJS.hideFilter(true, false);
+                    Controller.getSize(end);
                     DOMs.checkDeletes();
                 } else if (users[index].password === p) {
                     user = l;
 
                     window.localStorage.setItem("user", JSON.stringify(user));
-                    us.innerHTML = JSON.parse(window.localStorage.getItem("user"));
+                    us.textContent = JSON.parse(window.localStorage.getItem("user"));
                     photos.style.display = "inline-block";
                     rect.style.display = "none";
                     DOMs.initElem(user);
                     document.getElementsByClassName("authinputs")[1].value = "";
                     document.getElementsByClassName("authinputs")[0].value = "";
-                    if (end < Racoon.getArSize())
-                        SecondJS.hideFilter(false, false);
-                    else SecondJS.hideFilter(true, false);
+                    Controller.getSize(end);
                     DOMs.checkDeletes();
                 } else {
-                    sure.innerHTML = "Sorry, but such user is already exist or you entered wrong password.";
+                    sure.textContent = "Sorry, but such user is already exist or you entered wrong password.";
                     windows.appendChild(ok);
                     document.body.appendChild(b);
                     document.body.appendChild(a);
                 }
 
             } else {
-                sure.innerHTML = "Unfortunately,you entred invalid arguments.";
+                sure.textContent = "Unfortunately,you entred invalid arguments.";
                 windows.appendChild(ok);
                 document.body.appendChild(b);
                 document.body.appendChild(a);
             }
 
         },
-        checkDeletes: function() {
+        checkDeletes: function () {
             let elems = document.getElementsByClassName("all");
             for (var i = 0; i < elems.length; i++) {
 
@@ -275,16 +267,13 @@ const DOMs = (function() {
             }
 
         },
-        moreClick: function() {
+        moreClick: function () {
             start += 10;
             end += 10;
-            DOMs.showPhotoPosts(Racoon.getPhotoPosts(start, end, filter), start, end);
-            if (end >= Racoon.getArSize())
-                SecondJS.hideFilter(true, false);
+            Controller.getPosts(start, end, filter);
         },
-        workFilter: function(filt) {
+        workFilter: function (filt) {
             filter = filt;
-
             if (filter.isA === false && filter.isD === false && filter.isH === false) {
                 photos.style.display = "inline-block";
                 photos22.style.display = "none";
@@ -296,18 +285,18 @@ const DOMs = (function() {
 
                 photos2.innerHTML = "";
                 photos22.style.display = "inline-block";
-                let p1 = Racoon.getPhotoPosts(start, Racoon.getArSize(), filter);
-                DOMs.showFilterPhotoPosts(p1, start, Racoon.getArSize());
-                if (p1.length === 0) {
-                    sure.innerHTML = "Sorry,but there are no posts to show";
-                    windows.appendChild(ok);
-                    document.body.appendChild(b);
-                    document.body.appendChild(a);
-                } else DOMs.checkLikes();
+                Controller.workFilter(filter);
+                DOMs.checkLikes();
             }
 
         },
-        showPhotoPosts: function(photoPosts, start, end) {
+        windOk: function () {
+            sure.textContent = "Sorry,but there are no posts to show";
+            windows.appendChild(ok);
+            document.body.appendChild(b);
+            document.body.appendChild(a);
+        },
+        showPhotoPosts: function (photoPosts, start, end) {
             if (end !== null && start !== null) {
                 for (let i = 0; i < (end - start); i++) {
                     if (i < photoPosts.length)
@@ -317,7 +306,7 @@ const DOMs = (function() {
             }
 
         },
-        showFilterPhotoPosts: function(photoPosts, start, end) {
+        showFilterPhotoPosts: function (photoPosts, start, end) {
             if (end !== null && start !== null) {
                 for (let i = 0; i < (end - start); i++) {
                     if (i < photoPosts.length)
@@ -327,23 +316,21 @@ const DOMs = (function() {
             }
 
         },
-        addPhoto: function(photoPost) {
-            if (Racoon.addPhotoPost(photoPost) === true) {
-                posts = Racoon.getPhotoPosts(0, Racoon.getArSize());
-                window.localStorage.setItem("photoPosts", JSON.stringify(posts));
-                photos.removeChild(photos.lastElementChild);
-                photos.insertBefore(DOMs.initDivPhoto(photoPost), photos.firstElementChild);
-                return true;
+        addPhotoJS: function (post) {
+            let p;
+            if (typeof post === 'string') {
+                p = JSON.parse(post, function (key, value) {
+                    if (key == 'createdAt') return new Date(value);
+                    return value;
+                });
+                post = p;
             }
-            return false;
-        },
-        addPhotoJS: function(post) {
             photos.style.display = "none";
             SecondJS.hideFilter(true, true);
             head.style.display = "none";
             log.style.display = "none";
             login.style.display = "inline-block";
-            login.innerHTML = "Back";
+            login.textContent = "Back";
 
             author = user;
             createdAt = new Date();
@@ -362,10 +349,9 @@ const DOMs = (function() {
             let name = document.createElement('div');
             name.className = "name";
             usname2 = document.createElement('p');
-            usname2.innerHTML = author;
-
+            usname2.textContent = author;
             date2 = document.createElement('p');
-            date2.innerHTML = createdAt.toLocaleString("en-US", options);
+            date2.textContent = createdAt.toLocaleString("en-US", options);
             usname2.appendChild(date2);
             name.appendChild(usname2);
             up.appendChild(avatar);
@@ -380,12 +366,12 @@ const DOMs = (function() {
             let photo = document.createElement('input');
             photo.className = "textarea";
             photo.setAttribute("type", "file");
-            photo.onchange = function() {
+            let textFile;
+            photo.onchange = function () {
                 let fileList = this.files;
-                let textFile = fileList[0];
-                photoplace2.src = textFile.name;
+                textFile = fileList[0];
+                Controller.loadFile(textFile);
             };
-            // photo.setAttribute("onchange", "DOMs.loadFile()");
             photoplace.appendChild(photoplace2);
             photoplace.appendChild(photo);
             all2.appendChild(photoplace);
@@ -410,11 +396,11 @@ const DOMs = (function() {
             photo.setAttribute("accept", "image/*");
             buttonadd = document.createElement('button');
             buttonadd.className = "button2";
-            buttonadd.innerHTML = "Add";
+            buttonadd.textContent = "Add";
             buttonadd.addEventListener('click', DOMs.addClick);
             let buttonedit = document.createElement('button');
             buttonedit.className = "button3";
-            buttonedit.innerHTML = "Edit";
+            buttonedit.textContent = "Edit";
             buttonedit.addEventListener('click', DOMs.editClick);
             buttonadd.style.display = "inline-block";
             buttonedit.style.display = "none";
@@ -430,76 +416,77 @@ const DOMs = (function() {
             document.body.insertBefore(all2, photos);
 
         },
-        loadFile: function() {
-            /*  var file = document.querySelector('input[type=file]').files[0];
-              var reader = new FileReader();
-              event.preventDefault();
-              reader.addEventListener("load", function() {
-                  //photoplace2.src = reader.result;
-                  photoplace2.src = reader.readAsDataURL(file);
-              }, false);*/
-
-            /* if (file) {
-                 reader.readAsDataURL(file);
-             }*/
+        setSrc: function (photo) {
+            photoplace2.src = photo;
         },
-        editClick: function() {
+        editClick: function () {
             photoLink = photoplace2.src;
             description = descr2.value;
             if (text2.value !== "")
                 hashtags = text2.value.split("#");
             else hashtags = undefined;
-            if (DOMs.editPhoto(currentId, {
-                    photoLink: photoLink,
-                    description: description,
-                    hashtags: hashtags
-                })) {
-                photos.style.display = "inline-block";
-                all2.innerHTML = "";
-                document.body.removeChild(all2);
-                SecondJS.hideFilter(false, false);
-                head.style.display = "inline-block";
-                log.style.display = "inline-block";
-                login.style.display = "none";
-                login.innerHTML = "Log in";
-
-            } else {
-                sure.innerHTML = "Unfortunately,you didn't enter description.";
-                windows.appendChild(ok);
-                document.body.appendChild(b);
-                document.body.appendChild(a);
-            }
+            Controller.editPhoto(currentId, {
+                photoLink: photoLink,
+                description: description,
+                hashtags: hashtags
+            });
         },
-        addClick: function() {
+        editOk: function (post) {
+            let p = JSON.parse(post, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
+            post = p;
+            photos.replaceChild(DOMs.initDivPhoto(post), document.getElementById(id));
+            photos.style.display = "inline-block";
+            all2.innerHTML = "";
+            document.body.removeChild(all2);
+            SecondJS.hideFilter(false, false);
+            head.style.display = "inline-block";
+            log.style.display = "inline-block";
+            login.style.display = "none";
+            login.textContent = "Log in";
+        },
+        editFail: function () {
+            sure.textContent = "Unfortunately,you didn't enter description.";
+            windows.appendChild(ok);
+            document.body.appendChild(b);
+            document.body.appendChild(a);
+        },
+        addOk: function (photoPost) {
+            photos.removeChild(photos.lastElementChild);
+            photos.insertBefore(DOMs.initDivPhoto(photoPost), photos.firstElementChild);
+            photos.style.display = "inline-block";
+            log.style.display = "inline-block";
+            login.style.display = "none";
+            login.textContent = "Log in";
+            all2.innerHTML = "";
+            document.body.removeChild(all2);
+            SecondJS.hideFilter(false, false);
+            head.style.display = "inline-block";
+        },
+        addFail: function () {
+            sure.textContent = "Unfortunately,you entered invalid arguments.Check your description/photoLink";
+            windows.appendChild(ok);
+            document.body.appendChild(b);
+            document.body.appendChild(a);
+        },
+        addClick: function () {
             photoLink = photoplace2.src;
             description = document.getElementById("textarea").value;
             if (text2.value !== "")
                 hashtags = text2.value.split("#");
             else hashtags = undefined;
-            if (DOMs.addPhoto({
-                    author: author,
-                    id: id,
-                    description: description,
-                    photoLink: photoLink,
-                    hashtags: hashtags,
-                    createdAt: createdAt
-                })) {
-                photos.style.display = "inline-block";
-                log.style.display = "inline-block";
-                login.style.display = "none";
-                login.innerHTML = "Log in";
-                all2.innerHTML = "";
-                document.body.removeChild(all2);
-                SecondJS.hideFilter(false, false);
-                head.style.display = "inline-block";
-            } else {
-                sure.innerHTML = "Unfortunately,you entered invalid arguments.Check your description/photoLink";
-                windows.appendChild(ok);
-                document.body.appendChild(b);
-                document.body.appendChild(a);
-            }
+            Controller.addPost({
+                author: author,
+                id: id,
+                description: description,
+                photoLink: photoLink,
+                hashtags: hashtags,
+                createdAt: createdAt
+            });
         },
-        initDivPhoto: function(photoPost) {
+        initDivPhoto: function (photoPost) {
             all = document.createElement('div');
             all.className = "all";
             all.id = photoPost.id;
@@ -516,10 +503,11 @@ const DOMs = (function() {
             let name = document.createElement('div');
             name.className = "name";
             let usname = document.createElement('p');
-            usname.innerHTML = photoPost.author;
+            usname.textContent = photoPost.author;
 
             let date = document.createElement('p');
-            date.innerHTML = photoPost.createdAt.toLocaleString("en-US", options);
+            let d = new Date(photoPost.createdAt);
+            date.textContent = d.toLocaleString("en-US", options);
             usname.appendChild(date);
             name.appendChild(usname);
             up.appendChild(avatar);
@@ -554,11 +542,11 @@ const DOMs = (function() {
             let descr = document.createElement('div');
             descr.className = "descr";
             let text = document.createElement('p');
-            text.innerHTML = photoPost.description;
+            text.textContent = photoPost.description;
             descr.appendChild(text);
             if (photoPost.hashtags !== undefined) {
                 let hashtags = document.createElement('b');
-                hashtags.innerHTML = "#" + photoPost.hashtags.join("#");
+                hashtags.textContent = "#" + photoPost.hashtags.join("#");
                 descr.appendChild(hashtags);
             }
             down.appendChild(descr);
@@ -576,17 +564,18 @@ const DOMs = (function() {
             all.addEventListener('click', DOMs.allClick);
             return all;
         },
-        allClick: function() {
+        writeLike: function (kol, ev) {
+            l = ev.children[0].children[0].children[0];
+            l.innerHTML = kol + "<br>" + "likes";
+        },
+        allClick: function () {
             if (event.target.title == "Like!") {
                 if (user !== null) {
-                    let kollik = Racoon.addLike(event.currentTarget.id, user);
-                    l = event.currentTarget.children[0].children[0].children[0];
-                    l.innerHTML = kollik + "<br>" + "likes";
-                    window.localStorage.setItem("photoPosts", JSON.stringify(Racoon.getPhotoPosts(0, Racoon.getArSize())));
+                    Controller.addLike(event.currentTarget, user)
                 }
             }
             if (event.target.title == "Delete") {
-                sure.innerHTML = "Are you sure, that you want delete photo?";
+                sure.textContent = "Are you sure, that you want delete photo?";
                 windows.appendChild(yes);
                 windows.appendChild(no);
                 document.body.appendChild(b);
@@ -595,55 +584,36 @@ const DOMs = (function() {
             }
             if (event.target.title == "Edit") {
                 currentId = event.currentTarget.id;
-                let temp2 = Racoon.getPhotoPost(currentId);
-                DOMs.addPhotoJS(temp2);
+                Controller.getPost(currentId);
             }
         },
-        hideAdel: function() {
+        hideAdel: function () {
             DOMs.removePhoto(currentId);
             DOMs.hideA();
         },
-
-        hideA: function() {
+        hideA: function () {
             document.body.removeChild(b);
             document.body.removeChild(a);
             windows.removeChild(yes);
             windows.removeChild(no);
         },
-        hideAo: function() {
+        hideAo: function () {
             document.body.removeChild(b);
             document.body.removeChild(a);
             windows.removeChild(ok);
         },
-        removePhoto: function(id) {
+        removePhoto: function (id) {
             if ((id !== '') && (typeof id === 'string')) {
-                let post = Racoon.getPhotoPost(id);
-                if (Racoon.removePhotoPost(id) === true) {
-                    photos.removeChild(document.getElementById(id));
-                    let pos = JSON.parse(window.localStorage.getItem("delPosts"));
-                    if (pos === null) pos = [];
-                    pos.push(post);
-                    window.localStorage.setItem("delPosts", JSON.stringify(pos));
-                    window.localStorage.setItem("photoPosts", JSON.stringify(Racoon.getPhotoPosts(0, Racoon.getArSize())));
-                    let ind = Racoon.getPhotoPostIndex(photos.lastElementChild.id);
-                    if (ind !== 0) {
-                        ind++;
-                        start++;
-                        end++;
-                        photos.appendChild(DOMs.initDivPhoto(Racoon.getPhotoPostByIndex(ind)));
-                    }
-                }
+                Controller.removePost(id);
             }
         },
-        editPhoto: function(id, photoPost) {
-            if (Racoon.editPhotoPost(id, photoPost)) {
-                photos.replaceChild(DOMs.initDivPhoto(Racoon.getPhotoPost(id)), document.getElementById(id));
-
-                window.localStorage.setItem("photoPosts", JSON.stringify(Racoon.getPhotoPosts(0, Racoon.getArSize())));
-                return true;
-            } else return false;
+        removingChild: function (id, postt) {
+            photos.removeChild(document.getElementById(id));
+            start++;
+            end++;
+            photos.appendChild(DOMs.initDivPhoto(postt));
         },
-        testing: function() {
+        testing: function () {
             DOMs.initComponents();
         }
     };
