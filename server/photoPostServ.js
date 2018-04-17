@@ -1,40 +1,70 @@
 const fs = require('fs');
-const path="./server/data/posts.json";
-const Racoon = (function() {
-   let data=fs.readFileSync(path, 'utf8');
-   let photoPosts=JSON.parse(data);
+const path = "./server/data/posts.json";
+const Racoon = (function () {
+    let data = fs.readFileSync(path, 'utf8');
+    let photoPosts = JSON.parse(data, function (key, value) {
+        if (key == 'createdAt') return new Date(value);
+        return value;
+    });
     return {
-        writeF:function(){
-            fs.writeFileSync(path,JSON.stringify(photoPosts));
+        writeF: function () {
+            fs.writeFileSync(path, JSON.stringify(photoPosts));
         },
-        getArr: function() {
+        getArr: function () {
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
             return photoPosts;
         },
-        getPhotoPost: function(id) {
+        getPhotoPost: function (id) {
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
             if (id !== null || id !== undefined) {
-                var index = photoPosts.findIndex(function(element) {
+                var index = photoPosts.findIndex(function (element) {
                     return element.id === id;
                 });
                 return photoPosts[index];
             } else return undefined;
         },
-        getPhotoPostIndex: function(id) {
+        getPhotoPostIndex: function (id) {
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
             if (id !== null || id !== undefined) {
-                var index = photoPosts.findIndex(function(element) {
+                var index = photoPosts.findIndex(function (element) {
                     return element.id === id;
                 });
                 return index;
             } else return undefined;
         },
-        getPhotoPostByIndex: function(index) {
+        getPhotoPostByIndex: function (index) {
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
             if (index !== undefined && index >= 0 && index < photoPosts.length) {
                 return photoPosts[index];
             } else return undefined;
         },
-        validatePhotoPost: function(photoPost) {
+        validatePhotoPost: function (photoPost) {
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
+            let da = new Date(photoPost.createdAt);
+            photoPost.createdAt = da;
             if (photoPost !== null) {
                 if ((photoPost.id !== '') && (typeof photoPost.id === 'string')) {
-                    var index = photoPosts.findIndex(function(element) {
+                    var index = photoPosts.findIndex(function (element) {
                         return element.id === photoPost.id;
                     });
                     if (index == -1) {
@@ -56,7 +86,12 @@ const Racoon = (function() {
             } else return false;
         },
 
-        addPhotoPost: function(photoPost) {
+        addPhotoPost: function (photoPost) {
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
             if (Racoon.validatePhotoPost(photoPost)) {
                 photoPosts.unshift(photoPost);
                 photoPosts.sort(function compareData(a, b) {
@@ -66,8 +101,13 @@ const Racoon = (function() {
             } else return false;
         },
 
-        removePhotoPost: function(id) {
-            var index = photoPosts.findIndex(function(element) {
+        removePhotoPost: function (id) {
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
+            var index = photoPosts.findIndex(function (element) {
                 return element.id === id;
             });
             if (index === -1)
@@ -78,9 +118,16 @@ const Racoon = (function() {
             }
         },
 
-        editPhotoPost: function(id, photoPost) {
+        editPhotoPost: function (id, photoPost) {
+            let p = JSON.parse(photoPost);
+            photoPost = p;
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
             if (id !== undefined && photoPost !== undefined) {
-                var index = photoPosts.findIndex(function(element) {
+                var index = photoPosts.findIndex(function (element) {
                     return element.id === id;
                 });
                 if (index !== -1) {
@@ -98,9 +145,9 @@ const Racoon = (function() {
                         photoPosts[index].hashtags = photoPost.hashtags;
                     }
                     if (photoPost.likes !== undefined && (photoPost.likes instanceof Array)) {
-                        if ((photoPost.likes.findIndex(function(element) {
-                                return element === photoPosts[index].author;
-                            }) === -1)) {
+                        if ((photoPost.likes.findIndex(function (element) {
+                            return element === photoPosts[index].author;
+                        }) === -1)) {
                             photoPosts[index].likes = photoPost.likes;
                             return true;
                         } else return false;
@@ -109,16 +156,26 @@ const Racoon = (function() {
                 } else return false;
             } else return false;
         },
-        getArSize: function() {
+        getArSize: function () {
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
             return photoPosts.length;
         },
-        addLike: function(id, user) {
-            var index = photoPosts.findIndex(function(element) {
+        addLike: function (id, user) {
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
+            var index = photoPosts.findIndex(function (element) {
                 return element.id === id;
             });
             if (index !== -1) {
                 if (photoPosts[index].likes !== undefined) {
-                    let numb = photoPosts[index].likes.findIndex(function(element) {
+                    let numb = photoPosts[index].likes.findIndex(function (element) {
                         return element === user;
                     });
                     if (numb === -1) {
@@ -130,15 +187,26 @@ const Racoon = (function() {
             }
 
         },
-        numbLikes: function(id) {
-            var index = photoPosts.findIndex(function(element) {
+        numbLikes: function (id) {
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
+            var index = photoPosts.findIndex(function (element) {
                 return element.id === id;
             });
             if (photoPosts[index].likes === undefined) return 0;
             else return photoPosts[index].likes.length;
         },
 
-        getPhotoPosts: function(skip, top, filter) {
+        getPhotoPosts: function (skip, top, filter) {
+
+            data = fs.readFileSync(path, 'utf8');
+            photoPosts = JSON.parse(data, function (key, value) {
+                if (key == 'createdAt') return new Date(value);
+                return value;
+            });
             if (skip === undefined) skip = 0;
             if (top === undefined) top = 10;
             if (filter === undefined) {
@@ -147,16 +215,18 @@ const Racoon = (function() {
                 });
                 return photoPosts.slice(skip, top);
             } else {
+
+                let d1 = new Date(filter.date1), d2 = new Date(filter.date2);
                 var newAr = photoPosts;
                 if (filter.author !== undefined && filter.author !== '' && (typeof filter.author === 'string'))
-                    newAr = newAr.filter(function(obj) {
+                    newAr = newAr.filter(function (obj) {
                         return obj.author === filter.author;
                     });
                 if (filter.hashtags !== undefined && filter.hashtags instanceof Array)
-                    newAr = newAr.filter(function(obj) {
+                    newAr = newAr.filter(function (obj) {
                         if (obj.hashtags !== undefined) {
                             for (var j = 0; j < filter.hashtags.length; j++) {
-                                var ind = obj.hashtags.findIndex(function(element) {
+                                var ind = obj.hashtags.findIndex(function (element) {
                                     return element === filter.hashtags[j];
                                 });
                                 if (ind === -1) return false;
@@ -164,14 +234,15 @@ const Racoon = (function() {
                             return true;
                         } else return false;
                     });
-                if ((filter.date1 !== undefined) && (filter.date2 !== undefined) && (filter.date1 !== '') && (filter.date2 !== '') && (filter.date1 instanceof Date) && (filter.date2 instanceof Date))
-                    newAr = newAr.filter(function(obj) {
-                        return (((obj.createdAt - filter.date1) >= 0) && ((obj.createdAt - filter.date2) <= 0));
-                    });
+                if (filter.date1 !== "" && filter.date2 !== "")
+                    if ((d1 !== undefined) && (d2 !== undefined) && (d1 !== '') && (d2 !== '') && (d1 instanceof Date) && (d2 instanceof Date))
+                        newAr = newAr.filter(function (obj) {
+                            return (((obj.createdAt - d1) >= 0) && ((obj.createdAt - d2) <= 0));
+                        });
                 return newAr.slice(skip, top);
             }
         },
-        
+
     }
 }());
-module.exports=Racoon;
+module.exports = Racoon;
