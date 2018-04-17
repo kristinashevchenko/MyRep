@@ -10,7 +10,15 @@ const DOMs = (function () {
     let start = 0,
         end = 10,
         currentId;
-    let login, l, us, log, head, filter, all2, all, usname2, date2;
+    let login, l, us, log, head, filter = {
+        author: "",
+        date1: "",
+        date2: "",
+        hashtags: "",
+        isA: false,
+        isD: false,
+        isH: false
+    }, all2, all, usname2, date2;
     let a, b, windows, yes, no, logok, rect, sure, ok, photoplace2, text2, descr2, buttonadd, post;
     let author, createdAt, id, photoLink, description, hashtags;
     window.localStorage.setItem("user", JSON.stringify(user));
@@ -24,6 +32,8 @@ const DOMs = (function () {
         minute: 'numeric',
         second: 'numeric'
     };
+
+
     return {
         initComponents: function () {
             us = document.createElement('p');
@@ -136,7 +146,14 @@ const DOMs = (function () {
             yes.style.display = "block";
             no.style.display = "block";
             a.style.top = "200px";
-            Controller.getPosts(start, end);
+            const makeRequest2 = async (start, end) => {
+                await Controller.getPosts(start, end);
+                await Controller.getSize(end);
+                SecondJS.hideFilter(false, false);
+            };
+            makeRequest2(start, end).catch(reject => {
+                SecondJS.hideFilter(true, false)
+            });
             DOMs.initElem(user);
         },
         initElem: function (user) {
@@ -163,7 +180,11 @@ const DOMs = (function () {
         checkLikes: function () {
             let elems = document.getElementsByClassName("all");
             for (var i = 0; i < elems.length; i++) {
-                Controller.numbLikes(elems[i]);
+                const makeRequest = async () => {
+                    let p = await Controller.numbLikes(elems[i]);
+                    DOMs.writeLike(p.num, p.elem);
+                };
+                makeRequest();
             }
 
         },
@@ -176,7 +197,14 @@ const DOMs = (function () {
                 DOMs.initElem(user);
                 document.getElementsByClassName("authinputs")[1].value = "";
                 document.getElementsByClassName("authinputs")[0].value = "";
-                Controller.getSize(end);
+
+                const makeRequest3 = async (end) => {
+                    await Controller.getSize(end)
+                    SecondJS.hideFilter(false, false)
+                };
+                makeRequest3(end).catch(reject => {
+                    SecondJS.hideFilter(true, false)
+                });
                 if (all2.innerHTML !== "") {
                     all2.innerHTML = "";
                     document.body.removeChild(all2);
@@ -220,7 +248,13 @@ const DOMs = (function () {
                     DOMs.initElem(user);
                     document.getElementsByClassName("authinputs")[1].value = "";
                     document.getElementsByClassName("authinputs")[0].value = "";
-                    Controller.getSize(end);
+                    const makeRequest3 = async (end) => {
+                        await Controller.getSize(end)
+                        SecondJS.hideFilter(false, false)
+                    };
+                    makeRequest3(end).catch(reject => {
+                        SecondJS.hideFilter(true, false)
+                    });
                     DOMs.checkDeletes();
                 } else if (users[index].password === p) {
                     user = l;
@@ -232,7 +266,13 @@ const DOMs = (function () {
                     DOMs.initElem(user);
                     document.getElementsByClassName("authinputs")[1].value = "";
                     document.getElementsByClassName("authinputs")[0].value = "";
-                    Controller.getSize(end);
+                    const makeRequest3 = async (end) => {
+                        await Controller.getSize(end)
+                        SecondJS.hideFilter(false, false)
+                    };
+                    makeRequest3(end).catch(reject => {
+                        SecondJS.hideFilter(true, false)
+                    });
                     DOMs.checkDeletes();
                 } else {
                     sure.textContent = "Sorry, but such user is already exist or you entered wrong password.";
@@ -270,13 +310,40 @@ const DOMs = (function () {
         moreClick: function () {
             start += 10;
             end += 10;
-            Controller.getPosts(start, end, filter);
+            if (filter.isA === false && filter.isD === false && filter.isH === false) {
+                const makeRequest2 = async (start, end) => {
+                    await Controller.getPosts(start, end);
+                    await Controller.getSize(end);
+                    SecondJS.hideFilter(false, false);
+                };
+                makeRequest2(start, end).catch(reject => {
+                    SecondJS.hideFilter(true, false)
+                });
+            }
+            else {
+                const makeRequest = async (start, end, filter) => {
+                    await Controller.getPosts(start, end, filter);
+                    await Controller.getSize(end);
+                    SecondJS.hideFilter(false, false);
+                };
+                makeRequest(start, end, filter).catch(reject => {
+                    SecondJS.hideFilter(true, false)
+                });
+            }
+
         },
         workFilter: function (filt) {
             filter = filt;
-            if (filter.isA === false && filter.isD === false && filter.isH === false) {
+            if ((filter.isA === false && filter.isD === false && filter.isH === false)) {
                 photos.style.display = "inline-block";
                 photos22.style.display = "none";
+                const makeRequest3 = async (end) => {
+                    await Controller.getSize(end)
+                    SecondJS.hideFilter(false, false)
+                };
+                makeRequest3(end).catch(reject => {
+                    SecondJS.hideFilter(true, false)
+                });
                 DOMs.checkLikes();
             } else {
                 end = 10;
@@ -285,7 +352,17 @@ const DOMs = (function () {
 
                 photos2.innerHTML = "";
                 photos22.style.display = "inline-block";
-                Controller.workFilter(filter);
+                const makeRequest = async (filter) => {
+                    let re = await  Controller.workFilter(filter);
+                    let re2 = await Controller.workFilter2(re, filter);
+                    DOMs.showFilterPhotoPosts(re2.posts, 0, re2.size);
+                    if (re2.posts.length >= 10)
+                        SecondJS.hideFilter(true, false);
+                    else SecondJS.hideFilter(false, false);
+                };
+                makeRequest(filter).catch(reject => {
+                    DOMs.windOk();
+                });
                 DOMs.checkLikes();
             }
 
@@ -370,7 +447,10 @@ const DOMs = (function () {
             photo.onchange = function () {
                 let fileList = this.files;
                 textFile = fileList[0];
-                Controller.loadFile(textFile);
+                const makeRequest = async () => {
+                    DOMs.setSrc(await Controller.loadFile(textFile));
+                };
+                makeRequest();
             };
             photoplace.appendChild(photoplace2);
             photoplace.appendChild(photo);
@@ -425,10 +505,17 @@ const DOMs = (function () {
             if (text2.value !== "")
                 hashtags = text2.value.split("#");
             else hashtags = undefined;
-            Controller.editPhoto(currentId, {
-                photoLink: photoLink,
-                description: description,
-                hashtags: hashtags
+            const makeRequest = async () => {
+                await   Controller.editPhoto(currentId, {
+                    photoLink: photoLink,
+                    description: description,
+                    hashtags: hashtags
+                });
+                let re2 = await Controller.getPost(id);
+                DOMs.editOk(re2);
+            };
+            makeRequest().catch(reject => {
+                DOMs.editFail();
             });
         },
         editOk: function (post) {
@@ -477,13 +564,18 @@ const DOMs = (function () {
             if (text2.value !== "")
                 hashtags = text2.value.split("#");
             else hashtags = undefined;
-            Controller.addPost({
-                author: author,
-                id: id,
-                description: description,
-                photoLink: photoLink,
-                hashtags: hashtags,
-                createdAt: createdAt
+            const makeRequest = async () => {
+                DOMs.addOk(await  Controller.addPost({
+                    author: author,
+                    id: id,
+                    description: description,
+                    photoLink: photoLink,
+                    hashtags: hashtags,
+                    createdAt: createdAt
+                }));
+            };
+            makeRequest().catch(reject => {
+                DOMs.addFail()
             });
         },
         initDivPhoto: function (photoPost) {
@@ -571,7 +663,11 @@ const DOMs = (function () {
         allClick: function () {
             if (event.target.title == "Like!") {
                 if (user !== null) {
-                    Controller.addLike(event.currentTarget, user)
+                    const makeRequest = async () => {
+                        let p = await Controller.addLike(event.currentTarget, user);
+                        DOMs.writeLike(p.num, p.elem);
+                    };
+                    makeRequest();
                 }
             }
             if (event.target.title == "Delete") {
@@ -584,7 +680,10 @@ const DOMs = (function () {
             }
             if (event.target.title == "Edit") {
                 currentId = event.currentTarget.id;
-                Controller.getPost(currentId);
+                const makeRequest = async () => {
+                    DOMs.addPhotoJS(await Controller.getPost(currentId));
+                };
+                makeRequest();
             }
         },
         hideAdel: function () {
@@ -604,7 +703,15 @@ const DOMs = (function () {
         },
         removePhoto: function (id) {
             if ((id !== '') && (typeof id === 'string')) {
-                Controller.removePost(id);
+                const makeRequest = async () => {
+                    await  Controller.removePost(id);
+                    let re = await Controller.postIndex(id);
+                    let re2 = await Controller.postByIndex(re);
+                    DOMs.removingChild(id, re2);
+                };
+                makeRequest().catch(reject => {
+                    DOMs.editFail();
+                });
             }
         },
         removingChild: function (id, postt) {

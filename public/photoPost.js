@@ -1,18 +1,18 @@
 "use strict";
-const Racoon = (function() {
-    var photoPosts = JSON.parse(window.localStorage.getItem("photoPosts"), function(key, value) {
+const Racoon = (function () {
+    var photoPosts = JSON.parse(window.localStorage.getItem("photoPosts"), function (key, value) {
         if (key == 'createdAt') return new Date(value);
         return value;
     });
     var photoPosts2 = [{
-            id: '1',
-            description: 'Женская сборная Беларуси выиграла эстафету в рамках соревнований по биатлону на Олимпийских играх в Пхёнчхане!!!',
-            createdAt: new Date('2018-02-12T20:00:00'),
-            author: 'Egorka',
-            photoLink: 'http://ont.by/webroot/delivery/files/news/2018/02/22/Dom.jpg',
-            hashtags: ['sport', 'life'],
-            likes: ['Ivan', 'Masha03']
-        },
+        id: '1',
+        description: 'Женская сборная Беларуси выиграла эстафету в рамках соревнований по биатлону на Олимпийских играх в Пхёнчхане!!!',
+        createdAt: new Date('2018-02-12T20:00:00'),
+        author: 'Egorka',
+        photoLink: 'http://ont.by/webroot/delivery/files/news/2018/02/22/Dom.jpg',
+        hashtags: ['sport', 'life'],
+        likes: ['Ivan', 'Masha03']
+    },
         {
             id: '3',
             description: 'В здоровом теле здоровый дух',
@@ -160,34 +160,34 @@ const Racoon = (function() {
         photoPosts = photoPosts2;
     }
     return {
-        getArr: function() {
+        getArr: function () {
             return photoPosts;
         },
-        getPhotoPost: function(id) {
+        getPhotoPost: function (id) {
             if (id !== null || id !== undefined) {
-                var index = photoPosts.findIndex(function(element) {
+                var index = photoPosts.findIndex(function (element) {
                     return element.id === id;
                 });
                 return photoPosts[index];
             } else return undefined;
         },
-        getPhotoPostIndex: function(id) {
+        getPhotoPostIndex: function (id) {
             if (id !== null || id !== undefined) {
-                var index = photoPosts.findIndex(function(element) {
+                var index = photoPosts.findIndex(function (element) {
                     return element.id === id;
                 });
                 return index;
             } else return undefined;
         },
-        getPhotoPostByIndex: function(index) {
+        getPhotoPostByIndex: function (index) {
             if (index !== undefined && index >= 0 && index < photoPosts.length) {
                 return photoPosts[index];
             } else return undefined;
         },
-        validatePhotoPost: function(photoPost) {
+        validatePhotoPost: function (photoPost) {
             if (photoPost !== null) {
                 if ((photoPost.id !== '') && (typeof photoPost.id === 'string')) {
-                    var index = photoPosts.findIndex(function(element) {
+                    var index = photoPosts.findIndex(function (element) {
                         return element.id === photoPost.id;
                     });
                     if (index == -1) {
@@ -209,7 +209,7 @@ const Racoon = (function() {
             } else return false;
         },
 
-        addPhotoPost: function(photoPost) {
+        addPhotoPost: function (photoPost) {
             if (Racoon.validatePhotoPost(photoPost)) {
                 photoPosts.unshift(photoPost);
                 photoPosts.sort(function compareData(a, b) {
@@ -219,8 +219,8 @@ const Racoon = (function() {
             } else return false;
         },
 
-        removePhotoPost: function(id) {
-            var index = photoPosts.findIndex(function(element) {
+        removePhotoPost: function (id) {
+            var index = photoPosts.findIndex(function (element) {
                 return element.id === id;
             });
             if (index === -1)
@@ -231,9 +231,9 @@ const Racoon = (function() {
             }
         },
 
-        editPhotoPost: function(id, photoPost) {
+        editPhotoPost: function (id, photoPost) {
             if (id !== undefined && photoPost !== undefined) {
-                var index = photoPosts.findIndex(function(element) {
+                var index = photoPosts.findIndex(function (element) {
                     return element.id === id;
                 });
                 if (index !== -1) {
@@ -251,9 +251,9 @@ const Racoon = (function() {
                         photoPosts[index].hashtags = photoPost.hashtags;
                     }
                     if (photoPost.likes !== undefined && (photoPost.likes instanceof Array)) {
-                        if ((photoPost.likes.findIndex(function(element) {
-                                return element === photoPosts[index].author;
-                            }) === -1)) {
+                        if ((photoPost.likes.findIndex(function (element) {
+                            return element === photoPosts[index].author;
+                        }) === -1)) {
                             photoPosts[index].likes = photoPost.likes;
                             return true;
                         } else return false;
@@ -262,16 +262,16 @@ const Racoon = (function() {
                 } else return false;
             } else return false;
         },
-        getArSize: function() {
+        getArSize: function () {
             return photoPosts.length;
         },
-        addLike: function(id, user) {
-            var index = photoPosts.findIndex(function(element) {
+        addLike: function (id, user) {
+            var index = photoPosts.findIndex(function (element) {
                 return element.id === id;
             });
             if (index !== -1) {
                 if (photoPosts[index].likes !== undefined) {
-                    let numb = photoPosts[index].likes.findIndex(function(element) {
+                    let numb = photoPosts[index].likes.findIndex(function (element) {
                         return element === user;
                     });
                     if (numb === -1) {
@@ -283,15 +283,15 @@ const Racoon = (function() {
             }
 
         },
-        numbLikes: function(id) {
-            var index = photoPosts.findIndex(function(element) {
+        numbLikes: function (id) {
+            var index = photoPosts.findIndex(function (element) {
                 return element.id === id;
             });
             if (photoPosts[index].likes === undefined) return 0;
             else return photoPosts[index].likes.length;
         },
 
-        getPhotoPosts: function(skip, top, filter) {
+        getPhotoPosts: function (skip, top, filter) {
             if (skip === undefined) skip = 0;
             if (top === undefined) top = 10;
             if (filter === undefined) {
@@ -302,14 +302,14 @@ const Racoon = (function() {
             } else {
                 var newAr = photoPosts;
                 if (filter.author !== undefined && filter.author !== '' && (typeof filter.author === 'string'))
-                    newAr = newAr.filter(function(obj) {
+                    newAr = newAr.filter(function (obj) {
                         return obj.author === filter.author;
                     });
                 if (filter.hashtags !== undefined && filter.hashtags instanceof Array)
-                    newAr = newAr.filter(function(obj) {
+                    newAr = newAr.filter(function (obj) {
                         if (obj.hashtags !== undefined) {
                             for (var j = 0; j < filter.hashtags.length; j++) {
-                                var ind = obj.hashtags.findIndex(function(element) {
+                                var ind = obj.hashtags.findIndex(function (element) {
                                     return element === filter.hashtags[j];
                                 });
                                 if (ind === -1) return false;
@@ -318,12 +318,13 @@ const Racoon = (function() {
                         } else return false;
                     });
                 if ((filter.date1 !== undefined) && (filter.date2 !== undefined) && (filter.date1 !== '') && (filter.date2 !== '') && (filter.date1 instanceof Date) && (filter.date2 instanceof Date))
-                    newAr = newAr.filter(function(obj) {
+                    newAr = newAr.filter(function (obj) {
                         return (((obj.createdAt - filter.date1) >= 0) && ((obj.createdAt - filter.date2) <= 0));
                     });
                 return newAr.slice(skip, top);
             }
         },
-        test: function() {}
+        test: function () {
+        }
     }
 }());

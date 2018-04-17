@@ -1,4 +1,4 @@
-const SecondJS = (function() {
+const SecondJS = (function () {
     let more = document.getElementById("more");
     more.addEventListener('click', DOMs.moreClick);
     let filter = {
@@ -12,7 +12,7 @@ const SecondJS = (function() {
     };
     let filt = document.getElementsByClassName("filter")[0];
     return {
-        okA: function() {
+        okA: function () {
             if (document.getElementById("isAuthor").checked) {
                 filter.author = document.getElementById("lastname").value;
                 filter.isA = true;
@@ -22,7 +22,7 @@ const SecondJS = (function() {
             }
             DOMs.workFilter(filter);
         },
-        okD: function() {
+        okD: function () {
             if (document.getElementById("isDate").checked) {
                 let d1 = document.getElementById("date1").value;
                 filter.date1 = new Date(d1.replace(/(\d+).(\d+).(\d+)/, '$3/$2/$1'));
@@ -35,7 +35,7 @@ const SecondJS = (function() {
             }
             DOMs.workFilter(filter);
         },
-        okH: function() {
+        okH: function () {
             if (document.getElementById("isHash").checked) {
                 let temp = document.getElementById("hashtag").value.split("#");
                 for (let i = 0; i < temp.length; i++) {
@@ -50,7 +50,7 @@ const SecondJS = (function() {
             }
             DOMs.workFilter(filter);
         },
-        hideFilter: function(f1, f2) {
+        hideFilter: function (f1, f2) {
             if (f1 === true)
                 more.style.display = "none";
             else more.style.display = "block";
