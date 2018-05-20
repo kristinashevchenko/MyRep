@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb",
+  "extends": "airbnb-base",
   "globals": {
     "document": false,
     "XMLHttpRequest":false,
@@ -17,7 +17,8 @@
     "prefer-destructuring": ["error", {
       "array": true,
       "object": true
-    }]
+    }],
+    "linebreak-style":0
 
   },
   "env": {
