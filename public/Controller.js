@@ -216,5 +216,47 @@ const Controller = (function () {
         xmlhttp.send(null);
       }));
     },
+    getUser() {
+      return new Promise(((resolve, reject) => {
+        const xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://localhost:3000/login", true);
+        xmlhttp.onload = function () {
+          if (xmlhttp.status === 200) {
+            const us = xmlhttp.responseText;
+
+            resolve(us);
+          } else reject();
+        };
+        xmlhttp.send(null);
+      }));
+    },
+    logOut() {
+      return new Promise(((resolve, reject) => {
+        const xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", "http://localhost:3000/logout", true);
+        xmlhttp.onload = function () {
+          if (xmlhttp.status === 200) {
+            resolve();
+          } else reject();
+        };
+        xmlhttp.send(null);
+      }));
+    },
+    login(user) {
+      return new Promise(((resolve, reject) => {
+        const xmlhttp = new XMLHttpRequest();
+        const json = JSON.stringify(user);
+        xmlhttp.open("POST", "/login", true);
+        xmlhttp.onload = function () {
+          if (xmlhttp.status === 200) {
+            resolve(user);
+          } else {
+            reject();
+          }
+        };
+        xmlhttp.setRequestHeader("Content-Type", "application/json; charset=url-8");
+        xmlhttp.send(json);
+      }));
+    },
   };
 }());

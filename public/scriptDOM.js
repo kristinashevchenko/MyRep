@@ -1,8 +1,8 @@
 /* eslint-disable no-restricted-globals,prefer-destructuring */
 
 const DOMs = (function () {
-  let users = [];
-  let user = JSON.parse(window.localStorage.getItem("user"));
+  let user = null;
+
   const photos = document.createElement("div");
   photos.id = "photos";
   const photos2 = document.createElement("div");
@@ -47,7 +47,6 @@ const DOMs = (function () {
   let photoLink;
   let description;
   let hashtags;
-  window.localStorage.setItem("user", JSON.stringify(user));
   const options = {
     year: "numeric",
     month: "long",
@@ -63,7 +62,23 @@ const DOMs = (function () {
   return {
     initComponents() {
       us = document.createElement("p");
-      us.innerHTML = user;
+      const makeRequest4 = async () => {
+        user = await Controller.getUser();
+
+        DOMs.initComponents2();
+        DOMs.initComponents3();
+        DOMs.initComponents4();
+      };
+      makeRequest4().catch(() => {
+        user = null;
+
+        DOMs.initComponents2();
+        DOMs.initComponents3();
+        DOMs.initComponents4();
+      });
+    },
+    initComponents2() {
+      us.textContent = user;
       us.className = "user";
       log = document.createElement("div");
       log.className = "log";
@@ -99,7 +114,8 @@ const DOMs = (function () {
       document.body.appendChild(photos22);
       photos22.className = "ph";
       photos22.style.display = "none";
-
+    },
+    initComponents3() {
       const authoriz = document.createElement("h2");
       authoriz.textContent = "Authorization";
       authoriz.className = "authoriz";
@@ -141,7 +157,8 @@ const DOMs = (function () {
       rect.appendChild(authoriz);
       rect.style.display = "none";
       document.body.insertBefore(rect, photos);
-
+    },
+    initComponents4() {
       ok = document.createElement("button");
       ok.className = "okbutton";
       ok.textContent = "OK";
@@ -172,6 +189,7 @@ const DOMs = (function () {
       yes.style.display = "block";
       no.style.display = "block";
       a.style.top = "200px";
+
       const makeRequest2 = async () => {
         const posts = await Controller.getPosts(start, end);
         DOMs.showPhotoPosts(posts);
@@ -198,11 +216,16 @@ const DOMs = (function () {
       }
     },
     logOut() {
-      user = null;
-      window.localStorage.setItem("user", JSON.stringify(user));
-      photos22.style.display = "none";
-      DOMs.initElem();
-      DOMs.checkDeletes();
+      const makeRequest3 = async () => {
+        await Controller.logOut();
+        user = null;
+        photos22.style.display = "none";
+        DOMs.initElem();
+        DOMs.checkDeletes();
+      };
+      makeRequest3().catch(() => {
+
+      });
     },
     checkLikes() {
       const elems = document.getElementsByClassName("all");
@@ -245,69 +268,45 @@ const DOMs = (function () {
     login() {
       const p = document.getElementsByClassName("authinputs")[1].value;
       const l1 = document.getElementsByClassName("authinputs")[0].value;
-      users = JSON.parse(window.localStorage.getItem("users"));
-
+      const user2 = { username: l1, password: p };
       if (l1 !== "" && p !== "") {
-        let index;
-        if (users !== null) {
-          index = users.findIndex(element => element.login === l1);
-        } else {
-          users = [];
-          index = -1;
-        }
-        if (index === -1) {
-          users.push({
-            login: l1,
-            password: p,
-          });
-          user = l1;
-          window.localStorage.setItem("users", JSON.stringify(users));
-          users = [];
-          window.localStorage.setItem("user", JSON.stringify(user));
-          us.textContent = JSON.parse(window.localStorage.getItem("user"));
-          photos.style.display = "inline-block";
-          rect.style.display = "none";
-          DOMs.initElem();
-          document.getElementsByClassName("authinputs")[1].value = "";
-          document.getElementsByClassName("authinputs")[0].value = "";
-          const makeRequest3 = async () => {
-            await Controller.getSize(end);
-            SecondJS.hideFilter(false, false);
-          };
-          makeRequest3().catch(() => {
-            SecondJS.hideFilter(true, false);
-          });
-          DOMs.checkDeletes();
-        } else if (users[index].password === p) {
-          user = l1;
-
-          window.localStorage.setItem("user", JSON.stringify(user));
-          us.textContent = JSON.parse(window.localStorage.getItem("user"));
-          photos.style.display = "inline-block";
-          rect.style.display = "none";
-          DOMs.initElem();
-          document.getElementsByClassName("authinputs")[1].value = "";
-          document.getElementsByClassName("authinputs")[0].value = "";
-          const makeRequest3 = async () => {
-            await Controller.getSize(end);
-            SecondJS.hideFilter(false, false);
-          };
-          makeRequest3().catch(() => {
-            SecondJS.hideFilter(true, false);
-          });
-          DOMs.checkDeletes();
-        } else {
-          sure.textContent = "Sorry, but such user is already exist or you entered wrong password.";
-          windows.appendChild(ok);
-          document.body.appendChild(b);
-          document.body.appendChild(a);
-        }
+        const makeRequest = async () => {
+          const us2 = await Controller.login(user2);
+          DOMs.loginOk(us2);
+        };
+        makeRequest().catch(() => {
+          DOMs.loginFail();
+        });
       } else {
         sure.textContent = "Unfortunately,you entred invalid arguments.";
         windows.appendChild(ok);
         document.body.appendChild(b);
         document.body.appendChild(a);
       }
+    },
+    loginFail() {
+      sure.textContent = "Unfortunately,you entred wrong password/invalid login";
+      windows.appendChild(ok);
+      document.body.appendChild(b);
+      document.body.appendChild(a);
+    },
+    loginOk(user2) {
+      user = user2.username;
+      //  window.localStorage.setItem("user", JSON.stringify(user));
+      us.textContent = String(user);
+      photos.style.display = "inline-block";
+      rect.style.display = "none";
+      DOMs.initElem();
+      document.getElementsByClassName("authinputs")[1].value = "";
+      document.getElementsByClassName("authinputs")[0].value = "";
+      const makeRequest3 = async () => {
+        await Controller.getSize(end);
+        SecondJS.hideFilter(false, false);
+      };
+      makeRequest3().catch(() => {
+        SecondJS.hideFilter(true, false);
+      });
+      DOMs.checkDeletes();
     },
     checkDeletes() {
       const elems = document.getElementsByClassName("all");
