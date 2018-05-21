@@ -1,19 +1,63 @@
+/* eslint-disable object-shorthand */
 const express = require("express");
+
+const app = express();
 const multer = require("multer");
+const passport = require("passport");
+const User = require("./public/users.js");
+const LocalStrategy = require("passport-local").Strategy;
 
 const upload = multer();
 const bodyParser = require("body-parser");
-
-const app = express();
 const fs = require("fs");
-
-app.use(bodyParser.json());
 const posts = require("./server/photoPostServ.js");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+const bcrypt = require("bcrypt");
 
-app.use(express.static("public"));
-app.listen("3000", () => {
-  console.log("Server is running");
+
+passport.use(new LocalStrategy(((username, password, done) => {
+  const id2 = String(Number(User.getId()) + 1);
+  const user = { id: id2, username: username };
+  const salt = bcrypt.genSaltSync(10);
+  const pas = bcrypt.hashSync(password, salt);
+  const userA = { id: id2, username: username, password: pas };
+  if (User.addUser(userA)) {
+    done(null, user);
+  } else {
+    const us = User.getUserByLogin(username);
+    if (us !== undefined) {
+      if (bcrypt.compareSync(password, us.password)) {
+        done(null, user);
+      } else done(null, false, { message: "Неверный пароль." });
+    } else {
+      done(null, false, { message: "ERROR!" });
+      done(null, user);
+    }
+  }
+})));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
 });
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+app.use(cookieParser());
+app.use(session({
+  secret: "keyboard cat",
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false },
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(bodyParser.json());
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: false }));
+
+
 app.get("/post", (req, res) => {
   const post = posts.getPhotoPost(req.query.id);
   if (post !== undefined) {
@@ -52,10 +96,6 @@ app.get("/size", (req, res) => {
   res.status(200).end();
 });
 app.post("/posts", (req, res) => {
-  /* if(req.body.skip==0&&req.body.top==10)
-    portal.subscribe(req,res); */
-  /* if(req.body.skip==0&&req.body.top==10)
-         ress.push(res); */
   let f;
   if (req.body.filter !== undefined) {
     f = JSON.parse(req.body.filter, (key, value) => {
@@ -103,4 +143,26 @@ app.put("/post", (req, res) => {
     posts.writeF();
     res.status(200).end();
   } else res.status(404).end();
+});
+
+
+app.post("/login", passport.authenticate("local"), (req, res) => {
+  res.send(req.user.username);
+});
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  res.status(404).end();
+}
+app.get("/login", ensureAuthenticated, (req, res) => {
+  res.send(req.user.username);
+});
+app.get("/logout", (req, res) => {
+  req.logout();
+  res.end();
+});
+
+
+app.listen("3000", () => {
+  console.log("Server is running");
 });
