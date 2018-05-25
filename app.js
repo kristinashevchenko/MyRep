@@ -14,6 +14,8 @@ const posts = require("./server/photoPostServ.js");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
+// const User= require("./models/user.js");
+const Post = require("./models/post.js");
 
 
 passport.use(new LocalStrategy(((username, password, done) => {
@@ -59,10 +61,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 app.get("/post", (req, res) => {
-  const post = posts.getPhotoPost(req.query.id);
-  if (post !== undefined) {
-    res.send(post);
-    res.status(200).end();
+  if (req.user) {
+    const post = posts.getPhotoPost(req.query.id);
+    if (post !== undefined) {
+      res.send(post);
+      res.status(200).end();
+    } else res.status(404).end();
   } else res.status(404).end();
 });
 app.get("/postIndex", (req, res) => {
@@ -73,10 +77,12 @@ app.get("/postIndex", (req, res) => {
   } else res.status(404).end();
 });
 app.get("/postByIndex", (req, res) => {
-  const post = posts.getPhotoPostByIndex(req.query.id);
-  if (post !== undefined) {
-    res.send(post);
-    res.status(200).end();
+  if (req.user) {
+    const post = posts.getPhotoPostByIndex(req.query.id);
+    if (post !== undefined) {
+      res.send(post);
+      res.status(200).end();
+    } else res.status(404).end();
   } else res.status(404).end();
 });
 app.get("/likes", (req, res) => {
@@ -85,10 +91,12 @@ app.get("/likes", (req, res) => {
   res.status(200).end();
 });
 app.get("/addLike", (req, res) => {
-  const like = posts.addLike(req.query.id, req.query.user);
-  posts.writeF();
-  res.send(String(like));
-  res.status(200).end();
+  if (req.user) {
+    const like = posts.addLike(req.query.id, req.query.user);
+    posts.writeF();
+    res.send(String(like));
+    res.status(200).end();
+  } else res.status(404).end();
 });
 app.get("/size", (req, res) => {
   const size = posts.getArSize();
@@ -110,38 +118,42 @@ app.post("/posts", (req, res) => {
   } else res.status(404).end();
 });
 app.post("/post", (req, res) => {
-  if (posts.addPhotoPost({
-    id: req.body.id,
-    author: req.body.author,
-    createdAt: req.body.createdAt,
-    description: req.body.description,
-    photoLink: req.body.photoLink,
-    hashtags: req.body.hashtags,
-    likes: req.body.likes,
-  })) {
-    posts.writeF();
-    /* ress.forEach((response) => {
-            response.send([req.body]);
-        });
-        ress=[]; */
-    res.status(200).end();
+  if (req.user) {
+    if (posts.addPhotoPost({
+      id: req.body.id,
+      author: req.body.author,
+      createdAt: req.body.createdAt,
+      description: req.body.description,
+      photoLink: req.body.photoLink,
+      hashtags: req.body.hashtags,
+      likes: req.body.likes,
+    })) {
+      posts.writeF();
+      res.status(200).end();
+    } else res.status(404).end();
   } else res.status(404).end();
 });
 app.post("/uploadImage", upload.single("file"), (req, res) => {
-  fs.writeFile(`public/${req.file.originalname}`, req.file.buffer);
-  res.status(200).end();
-});
-app.delete("/post", (req, res) => {
-  const deleted = posts.removePhotoPost(req.query.id);
-  if (deleted) {
-    posts.writeF();
+  if (req.user) {
+    fs.writeFile(`public/${req.file.originalname}`, req.file.buffer);
     res.status(200).end();
   } else res.status(404).end();
 });
+app.delete("/post", (req, res) => {
+  if (req.user) {
+    const deleted = posts.removePhotoPost(req.query.id);
+    if (deleted) {
+      posts.writeF();
+      res.status(200).end();
+    } else res.status(404).end();
+  } else res.status(404).end();
+});
 app.put("/post", (req, res) => {
-  if (posts.editPhotoPost(req.body.id, req.body.post)) {
-    posts.writeF();
-    res.status(200).end();
+  if (req.user) {
+    if (posts.editPhotoPost(req.body.id, req.body.post)) {
+      posts.writeF();
+      res.status(200).end();
+    } else res.status(404).end();
   } else res.status(404).end();
 });
 
