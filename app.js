@@ -4,7 +4,6 @@ const express = require("express");
 const app = express();
 const multer = require("multer");
 const passport = require("passport");
-const User = require("./public/users.js");
 const LocalStrategy = require("passport-local").Strategy;
 
 const upload = multer();
@@ -13,30 +12,28 @@ const fs = require("fs");
 const posts = require("./server/photoPostServ.js");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const bcrypt = require("bcrypt");
-// const User= require("./models/user.js");
-const Post = require("./models/post.js");
+const User = require("./models/user_m.js");
+// const Post = require("./models/post.js");
 
 
 passport.use(new LocalStrategy(((username, password, done) => {
-  const id2 = String(Number(User.getId()) + 1);
-  const user = { id: id2, username: username };
-  const salt = bcrypt.genSaltSync(10);
-  const pas = bcrypt.hashSync(password, salt);
-  const userA = { id: id2, username: username, password: pas };
-  if (User.addUser(userA)) {
-    done(null, user);
-  } else {
-    const us = User.getUserByLogin(username);
-    if (us !== undefined) {
-      if (bcrypt.compareSync(password, us.password)) {
+  const user = { username: username };
+  const userA = { username: username, password: password };
+  const makeRequest = async () => {
+    const users = await User.validateUser(userA);
+    if (users.length === 0) {
+      User.addUser(userA);
+      done(null, user);
+    } else {
+      const user3 = await User.comparePass(userA, users[0]);
+      if (user3) {
         done(null, user);
       } else done(null, false, { message: "Неверный пароль." });
-    } else {
-      done(null, false, { message: "ERROR!" });
-      done(null, user);
     }
-  }
+  };
+  makeRequest().catch(() => {
+    done(null, false);
+  });
 })));
 
 passport.serializeUser((user, done) => {
